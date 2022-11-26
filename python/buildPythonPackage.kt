@@ -10,6 +10,7 @@ fun BuildSteps.buildPythonPackage(dockerToolsTag: String): ScriptBuildStep {
         scriptContent = """
                 #! /bin/sh
 
+                poetry config http-basic.pypi-group %system.package-manager.deployer.username% %system.package-manager.deployer.password%
                 poetry build
             """.trimIndent()
         this.dockerImage = "%system.docker-registry.group%/docker-tools/poetry:$dockerToolsTag"
