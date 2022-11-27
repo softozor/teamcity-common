@@ -11,6 +11,8 @@ fun BuildSteps.setupBasicAuth(): ScriptBuildStep {
                 #! /bin/sh
 
                 poetry config http-basic.pypi-group %system.package-manager.deployer.username% %system.package-manager.deployer.password%
+                
+                poetry config repositories.pypi-hosted https://%system.pypi-registry.hosted%/
                 poetry config http-basic.pypi-hosted %system.package-manager.deployer.username% %system.package-manager.deployer.password%
             """.trimIndent()
     }
