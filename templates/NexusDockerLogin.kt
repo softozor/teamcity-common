@@ -4,7 +4,7 @@ import jetbrains.buildServer.configs.kotlin.Template
 import jetbrains.buildServer.configs.kotlin.buildFeatures.dockerSupport
 
 object NexusDockerLogin : Template({
-    name = "Nexus Docker Login"
+    name = "Nexus_Docker_Login"
 
     features {
         dockerSupport {
