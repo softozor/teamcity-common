@@ -1,4 +1,4 @@
-package common.docker
+package common.templates
 
 import jetbrains.buildServer.configs.kotlin.Template
 import jetbrains.buildServer.configs.kotlin.buildFeatures.dockerSupport
