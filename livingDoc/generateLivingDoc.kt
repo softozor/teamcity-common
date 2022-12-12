@@ -29,7 +29,7 @@ fun BuildSteps.generateLivingDocumentation(
                   --et="wip" \
                   --enableComments=false
             """.trimIndent()
-        dockerImage = "%system.docker-registry.group%/docker-tools:$dockerTag"
+        dockerImage = "%system.docker-registry.group%/docker-tools/pickles:$dockerTag"
         dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
         dockerPull = true
     }
