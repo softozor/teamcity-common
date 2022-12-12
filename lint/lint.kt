@@ -8,7 +8,8 @@ fun BuildSteps.lint(): ScriptBuildStep {
     return script {
         name = "Check Code Formatting"
         scriptContent = """
-            run --all-files
+            #! /bin/sh
+            pre-commit run --all-files
         """.trimIndent()
         dockerImage = "%system.docker-registry.group%/fxinnovation/pre-commit:latest"
         dockerPull = true
