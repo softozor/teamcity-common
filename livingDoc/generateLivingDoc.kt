@@ -12,7 +12,8 @@ fun BuildSteps.generateLivingDocumentation(
     systemUnderTestName: String,
     pathToFeaturesDir: String,
     picklesReportDir: String,
-    resultsFile: String,
+    testResultsFile: String,
+    testResultsFormat: String,
     dockerTag: String,
 ): ScriptBuildStep {
     return script {
@@ -24,8 +25,8 @@ fun BuildSteps.generateLivingDocumentation(
                   --output-directory="$picklesReportDir" \
                   --system-under-test-name="$systemUnderTestName" \
                   --system-under-test-version="%build.vcs.number%" \
-                  --test-results-format="cucumberjson" \
-                  --link-results-file="$resultsFile" \
+                  --test-results-format="$testResultsFormat" \
+                  --link-results-file="$testResultsFile" \
                   --documentation-format=dhtml \
                   --language=en \
                   --exp \
