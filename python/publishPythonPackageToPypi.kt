@@ -23,7 +23,7 @@ fun BuildSteps.publishPythonPackageToPypi(dockerToolsTag: String): ScriptBuildSt
                 echo "##teamcity[message text='publishing to pypi.org' status='NORMAL']"
                 poetry publish -u %system.pypi-registry.pypi-org.username% -p %system.pypi-registry.pypi-org.password%
             """.trimIndent()
-        this.dockerImage = "%system.docker-registry.group%/docker-tools/poetry:$dockerToolsTag"
+        dockerImage = "%system.docker-registry.group%/docker-tools/poetry:$dockerToolsTag"
         dockerPull = true
         dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
     }

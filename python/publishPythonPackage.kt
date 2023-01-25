@@ -17,7 +17,7 @@ fun BuildSteps.publishPythonPackageToHosted(dockerToolsTag: String): ScriptBuild
 
                 poetry publish -r pypi-hosted
             """.trimIndent()
-        this.dockerImage = "%system.docker-registry.group%/docker-tools/poetry:$dockerToolsTag"
+        dockerImage = "%system.docker-registry.group%/docker-tools/poetry:$dockerToolsTag"
         dockerPull = true
         dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
     }

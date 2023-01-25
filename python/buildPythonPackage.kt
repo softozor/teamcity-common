@@ -12,7 +12,7 @@ fun BuildSteps.buildPythonPackage(dockerToolsTag: String): ScriptBuildStep {
 
                 poetry build
             """.trimIndent()
-        this.dockerImage = "%system.docker-registry.group%/docker-tools/poetry:$dockerToolsTag"
+        dockerImage = "%system.docker-registry.group%/docker-tools/poetry:$dockerToolsTag"
         dockerPull = true
         dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
     }

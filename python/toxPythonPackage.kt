@@ -15,7 +15,7 @@ fun BuildSteps.toxPythonPackage(dockerToolsTag: String, testArgs: List<String> =
                 pyenv local 3.8 3.9 3.10 3.11
                 tox -- ${testArgs.joinToString(" ")}
             """.trimIndent()
-        this.dockerImage = "%system.docker-registry.group%/docker-tools/python-tests:$dockerToolsTag"
+        dockerImage = "%system.docker-registry.group%/docker-tools/python-tests:$dockerToolsTag"
         dockerPull = true
         dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
     }
