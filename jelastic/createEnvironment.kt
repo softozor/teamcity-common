@@ -10,7 +10,8 @@ fun BuildSteps.createEnvironment(
     manifestUrl: String,
     jsonSettingsFile: String? = null,
     region: String? = null,
-    dockerToolsTag: String
+    dockerToolsTag: String,
+    workingDir: String = "",
 ): PythonBuildStep {
     val jsonSettingsFileOption = if(jsonSettingsFile == null) "" else "--json-settings-file $jsonSettingsFile"
     val regionOption = if(region == null) "" else "--region $region"
@@ -31,5 +32,6 @@ fun BuildSteps.createEnvironment(
         dockerImage = "%system.docker-registry.group%/docker-tools/jelastic:$dockerToolsTag"
         dockerPull = true
         dockerImagePlatform = PythonBuildStep.ImagePlatform.Linux
+        this.workingDir = workingDir
     }
 }
