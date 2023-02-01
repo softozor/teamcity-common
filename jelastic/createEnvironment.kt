@@ -17,7 +17,7 @@ fun BuildSteps.createEnvironment(
     val regionOption = if(region == null) "" else "--region $region"
 
     return python {
-        name = "Create Jelastic Environment"
+        name = "Create Jelastic Environment '$envName'"
         command = script {
             content = readScript("common/jelastic/create_environment.py")
             scriptArguments = """
