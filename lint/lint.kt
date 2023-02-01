@@ -1,18 +1,17 @@
-package common.python
+package common.lint
 
 import jetbrains.buildServer.configs.kotlin.BuildSteps
 import jetbrains.buildServer.configs.kotlin.buildSteps.ScriptBuildStep
 import jetbrains.buildServer.configs.kotlin.buildSteps.script
 
-fun BuildSteps.buildPythonPackage(dockerToolsTag: String): ScriptBuildStep {
+fun BuildSteps.lint(): ScriptBuildStep {
     return script {
-        name = "Build"
+        name = "Check Code Formatting"
         scriptContent = """
-                #! /bin/sh
-
-                poetry build
-            """.trimIndent()
-        dockerImage = "%system.docker-registry.group%/docker-tools/poetry:$dockerToolsTag"
+            #! /bin/sh
+            pre-commit run --all-files
+        """.trimIndent()
+        dockerImage = "%system.docker-registry.group%/fxinnovation/pre-commit:latest"
         dockerPull = true
         dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
     }

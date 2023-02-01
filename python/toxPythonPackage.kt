@@ -10,10 +10,12 @@ fun BuildSteps.toxPythonPackage(dockerToolsTag: String, testArgs: List<String> =
         scriptContent = """
                 #! /bin/sh
 
+                poetry config http-basic.pypi-group %system.package-manager.deployer.username% %system.package-manager.deployer.password%
+
                 pyenv local 3.8 3.9 3.10 3.11
                 tox -- ${testArgs.joinToString(" ")}
             """.trimIndent()
-        this.dockerImage = "%system.docker-registry.group%/docker-tools/python-tests:$dockerToolsTag"
+        dockerImage = "%system.docker-registry.group%/docker-tools/python-tests:$dockerToolsTag"
         dockerPull = true
         dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
     }
