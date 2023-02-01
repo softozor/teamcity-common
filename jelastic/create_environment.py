@@ -38,12 +38,13 @@ def main():
 
     jps_client = client_factory.create_jps_client()
     settings = read_settings_from_file(args.json_settings_file)
-    jps_client.install_from_url(
+    success_text = jps_client.install_from_url(
         url=args.manifest_url,
         env_name=args.env_name,
         settings=settings,
         region=args.region,
     )
+    print("success text: ", success_text)
 
     env_info = control_client.get_env_info(args.env_name)
     print("env info: ", env_info.status())
