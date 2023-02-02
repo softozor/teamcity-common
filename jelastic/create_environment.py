@@ -1,6 +1,7 @@
 import json
 import sys
 from argparse import Namespace, ArgumentParser
+from urllib.request import urlopen
 
 from jelastic_client import JelasticClientFactory
 
@@ -25,6 +26,12 @@ def read_settings_from_file(filename: str) -> dict:
     return settings
 
 
+def is_update_manifest(manifest_url: str) -> bool:
+    response = urlopen(manifest_url)
+    manifest_content = response.read()
+    return "type: update" in str(manifest_content)
+
+
 def main():
     args = parse_cmd_line_args()
     client_factory = JelasticClientFactory(
@@ -32,8 +39,12 @@ def main():
     )
     control_client = client_factory.create_control_client()
     env_info = control_client.get_env_info(args.env_name)
-    if env_info.is_running():
-        print(f"Environment {args.env_name} already exists.")
+
+    is_update = is_update_manifest(args.manifest_url)
+    is_install = not is_update
+
+    if (is_update and not env_info.is_running()) or (is_install and env_info.is_running()):
+        print(f"Cannot {'update' if is_update else 'install'} environment {args.env_name}.")
         sys.exit(1)
 
     jps_client = client_factory.create_jps_client()
