@@ -1,6 +1,7 @@
 package jelastic
 
 import common.scripts.readScript
+import jetbrains.buildServer.configs.kotlin.BuildStep
 import jetbrains.buildServer.configs.kotlin.BuildSteps
 import jetbrains.buildServer.configs.kotlin.buildSteps.PythonBuildStep
 import jetbrains.buildServer.configs.kotlin.buildSteps.python
@@ -22,5 +23,6 @@ fun BuildSteps.deleteEnvironment(
         dockerImage = "%system.docker-registry.group%/docker-tools/jelastic:$dockerToolsTag"
         dockerPull = true
         dockerImagePlatform = PythonBuildStep.ImagePlatform.Linux
+        executionMode = BuildStep.ExecutionMode.RUN_ON_FAILURE
     }
 }
