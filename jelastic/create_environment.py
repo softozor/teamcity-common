@@ -1,8 +1,8 @@
 import json
 import sys
 from argparse import Namespace, ArgumentParser
-from urllib.request import urlopen
-
+import urllib.request
+import yaml
 from jelastic_client import JelasticClientFactory
 
 
@@ -27,9 +27,10 @@ def read_settings_from_file(filename: str) -> dict:
 
 
 def is_update_manifest(manifest_url: str) -> bool:
-    response = urlopen(manifest_url)
-    manifest_content = response.read()
-    return "type: update" in str(manifest_content)
+    with urllib.request.urlopen(manifest_url) as response:
+        manifest_content = response.read().decode()
+        manifest_data = yaml.safe_load(manifest_content)
+    return manifest_data["type"] == "update"
 
 
 def main():
