@@ -1,7 +1,8 @@
 import json
 import sys
-from argparse import Namespace, ArgumentParser
 import urllib.request
+from argparse import Namespace, ArgumentParser
+
 import yaml
 from jelastic_client import JelasticClientFactory
 
@@ -16,6 +17,7 @@ def parse_cmd_line_args() -> Namespace:
     parser.add_argument("--manifest-url", required=True, type=str, action="store")
     parser.add_argument("--json-settings-file", type=str, action="store")
     parser.add_argument("--region", type=str, action="store")
+    parser.add_argument("--output-success-text-file", required=True, type=str, action="store")
     args = parser.parse_args()
     return args
 
@@ -56,7 +58,9 @@ def main():
         settings=settings,
         region=args.region,
     )
-    print("success text: ", success_text)
+
+    with open(args.output_success_text_file, "w") as file:
+        file.write(success_text)
 
     env_info = control_client.get_env_info(args.env_name)
     print("env info: ", env_info.status())

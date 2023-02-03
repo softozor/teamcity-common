@@ -8,6 +8,7 @@ import jetbrains.buildServer.configs.kotlin.buildSteps.python
 fun BuildSteps.createEnvironment(
     envName: String,
     manifestUrl: String,
+    outputSuccessTextFile: String,
     jsonSettingsFile: String? = null,
     region: String? = null,
     dockerToolsTag: String,
@@ -25,6 +26,7 @@ fun BuildSteps.createEnvironment(
                     --jelastic-access-token %system.jelastic.access-token%
                     --env-name $envName
                     --manifest-url $manifestUrl
+                    --output-success-text-file $outputSuccessTextFile
                     $jsonSettingsFileOption
                     $regionOption
                 """.trimIndent()
