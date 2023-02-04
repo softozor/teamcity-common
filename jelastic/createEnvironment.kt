@@ -1,4 +1,4 @@
-package jelastic
+package common.jelastic
 
 import common.scripts.readScript
 import jetbrains.buildServer.configs.kotlin.BuildSteps
