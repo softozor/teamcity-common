@@ -4,7 +4,7 @@ import jetbrains.buildServer.configs.kotlin.BuildSteps
 import jetbrains.buildServer.configs.kotlin.buildSteps.ScriptBuildStep
 import jetbrains.buildServer.configs.kotlin.buildSteps.script
 
-fun BuildSteps.toxPythonPackage(dockerToolsTag: String, testArgs: List<String> = listOf()): ScriptBuildStep {
+fun BuildSteps.tox(dockerToolsTag: String, testArgs: List<String> = listOf()): ScriptBuildStep {
     return script {
         name = "Test"
         scriptContent = """

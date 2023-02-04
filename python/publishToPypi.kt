@@ -4,7 +4,7 @@ import jetbrains.buildServer.configs.kotlin.BuildSteps
 import jetbrains.buildServer.configs.kotlin.buildSteps.ScriptBuildStep
 import jetbrains.buildServer.configs.kotlin.buildSteps.script
 
-fun BuildSteps.publishPythonPackageToPypi(dockerToolsTag: String): ScriptBuildStep {
+fun BuildSteps.publishToPypi(dockerToolsTag: String): ScriptBuildStep {
     return script {
         name = "Publish To Pypi"
         scriptContent = """

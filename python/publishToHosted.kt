@@ -4,13 +4,18 @@ import jetbrains.buildServer.configs.kotlin.BuildSteps
 import jetbrains.buildServer.configs.kotlin.buildSteps.ScriptBuildStep
 import jetbrains.buildServer.configs.kotlin.buildSteps.script
 
-fun BuildSteps.buildPythonPackage(dockerToolsTag: String): ScriptBuildStep {
+fun BuildSteps.publishToHosted(dockerToolsTag: String): ScriptBuildStep {
     return script {
-        name = "Build"
+        name = "Publish"
         scriptContent = """
                 #! /bin/sh
 
-                poetry build
+                set -e
+
+                poetry config repositories.pypi-hosted https://%system.pypi-registry.hosted%/
+                poetry config http-basic.pypi-hosted %system.package-manager.deployer.username% %system.package-manager.deployer.password%
+
+                poetry publish -r pypi-hosted
             """.trimIndent()
         dockerImage = "%system.docker-registry.group%/docker-tools/poetry:$dockerToolsTag"
         dockerPull = true
