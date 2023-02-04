@@ -15,9 +15,12 @@ def parse_cmd_line_args() -> Namespace:
     )
     parser.add_argument("--env-name", required=True, type=str, action="store")
     parser.add_argument("--manifest-url", required=True, type=str, action="store")
+    parser.add_argument("--success-text-query", default=None, type=str, action="store")
     parser.add_argument("--json-settings-file", type=str, action="store")
     parser.add_argument("--region", type=str, action="store")
-    parser.add_argument("--output-success-text-file", required=True, type=str, action="store")
+    parser.add_argument(
+        "--output-success-text-file", required=True, type=str, action="store"
+    )
     args = parser.parse_args()
     return args
 
@@ -46,17 +49,34 @@ def main():
     is_update = is_update_manifest(args.manifest_url)
     is_install = not is_update
 
-    if (is_update and not env_info.is_running()) or (is_install and env_info.is_running()):
-        print(f"Cannot {'update' if is_update else 'install'} environment {args.env_name}.")
+    if (is_update and not env_info.is_running()) or (
+        is_install and env_info.is_running()
+    ):
+        print(
+            f"Cannot {'update' if is_update else 'install'} environment {args.env_name}."
+        )
         sys.exit(1)
 
     jps_client = client_factory.create_jps_client()
-    settings = read_settings_from_file(args.json_settings_file)
+    settings = (
+        read_settings_from_file(args.json_settings_file)
+        if args.json_settings_file
+        else None
+    )
+    success = (
+        {
+            "email": False,
+            "text": args.success_text_query,
+        }
+        if args.success_text_query
+        else None
+    )
     success_text = jps_client.install_from_url(
         url=args.manifest_url,
         env_name=args.env_name,
         settings=settings,
         region=args.region,
+        success=success,
     )
 
     with open(args.output_success_text_file, "w") as file:
