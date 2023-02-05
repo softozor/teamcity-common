@@ -12,7 +12,7 @@ fun BuildSteps.publishEnvVarsFromSuccessText(
     return python {
         name = "Publish Environment Variables From Success Text"
         command = script {
-            content = readScript("common/publish_env_vars_from_success_text.py")
+            content = readScript("common/jelastic/publish_env_vars_from_success_text.py")
             scriptArguments = """
                     --success-text-file $successTextFile
                 """.trimIndent()
