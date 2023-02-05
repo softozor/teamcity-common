@@ -27,7 +27,7 @@ fun BuildSteps.createEnvironment(
                     --jelastic-access-token %system.jelastic.access-token%
                     --env-name $envName
                     --manifest-url $manifestUrl
-                    --success-text-query $successTextQuery
+                    --success-text-query "$successTextQuery"
                     --output-success-text-file $outputSuccessTextFile
                     $jsonSettingsFileOption
                     $regionOption
