@@ -2,7 +2,6 @@ import json
 import sys
 import urllib.request
 from argparse import Namespace, ArgumentParser
-from typing import List
 
 import yaml
 from jelastic_client import JelasticClientFactory
@@ -16,7 +15,7 @@ def parse_cmd_line_args() -> Namespace:
     )
     parser.add_argument("--env-name", required=True, type=str, action="store")
     parser.add_argument("--manifest-url", required=True, type=str, action="store")
-    parser.add_argument("--env-prop-query", action="append", nargs=2, type=List[str])
+    parser.add_argument("--env-props-query", action="append", nargs=1, type=str)
     parser.add_argument("--json-settings-file", type=str, action="store")
     parser.add_argument("--region", type=str, action="store")
     parser.add_argument(
@@ -41,6 +40,7 @@ def is_update_manifest(manifest_url: str) -> bool:
 
 def main():
     args = parse_cmd_line_args()
+
     client_factory = JelasticClientFactory(
         args.jelastic_api_url, args.jelastic_access_token
     )
@@ -65,8 +65,8 @@ def main():
         else None
     )
     env_props_query = (
-        {kv[0]: kv[1] for kv in args.env_props_query}
-        if args.success_text_query
+        {kv[0]: kv[1] for kv in map(lambda q: q[0].split("="), args.env_props_query)}
+        if args.env_props_query
         else None
     )
     env_props = jps_client.install_from_url(

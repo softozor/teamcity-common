@@ -17,7 +17,7 @@ fun BuildSteps.createEnvironment(
 ): PythonBuildStep {
     val jsonSettingsFileOption = if(jsonSettingsFile == null) "" else "--json-settings-file $jsonSettingsFile"
     val regionOption = if(region == null) "" else "--region $region"
-    val envPropsQueriesOption = envPropsQueries.joinToString(" --env-prop-query ", prefix = "--env-prop-query "){"${it.first} '${it.second}'"}
+    val envPropsQueriesOption = envPropsQueries.joinToString(" --env-props-query ", prefix = "--env-props-query "){"${it.first}='${it.second}'"}
 
     return python {
         name = "Create Jelastic Environment '$envName'"
