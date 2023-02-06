@@ -18,9 +18,6 @@ def parse_cmd_line_args() -> Namespace:
     parser.add_argument("--env-props-query", action="append", nargs=1, type=str)
     parser.add_argument("--json-settings-file", type=str, action="store")
     parser.add_argument("--region", type=str, action="store")
-    parser.add_argument(
-        "--output-success-text-file", required=True, type=str, action="store"
-    )
     args = parser.parse_args()
     return args
 

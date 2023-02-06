@@ -9,7 +9,6 @@ fun BuildSteps.createEnvironment(
     envName: String,
     manifestUrl: String,
     envPropsQueries: List<Pair<String, String>>,
-    outputSuccessTextFile: String,
     jsonSettingsFile: String? = null,
     region: String? = null,
     dockerToolsTag: String,
@@ -29,7 +28,6 @@ fun BuildSteps.createEnvironment(
                     --env-name $envName
                     --manifest-url $manifestUrl
                     $envPropsQueriesOption
-                    --output-success-text-file $outputSuccessTextFile
                     $jsonSettingsFileOption
                     $regionOption
                 """.trimIndent()
