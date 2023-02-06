@@ -8,15 +8,19 @@ import jetbrains.buildServer.configs.kotlin.buildSteps.python
 fun BuildSteps.createEnvironment(
     envName: String,
     manifestUrl: String,
-    envPropsQueries: List<Pair<String, String>>,
+    envPropsQueries: List<Pair<String, String>>? = null,
     jsonSettingsFile: String? = null,
     region: String? = null,
     dockerToolsTag: String,
     workingDir: String = "",
 ): PythonBuildStep {
-    val jsonSettingsFileOption = if(jsonSettingsFile == null) "" else "--json-settings-file $jsonSettingsFile"
-    val regionOption = if(region == null) "" else "--region $region"
-    val envPropsQueriesOption = envPropsQueries.joinToString(" --env-props-query ", prefix = "--env-props-query "){"${it.first}='${it.second}'"}
+    val jsonSettingsFileOption = if (jsonSettingsFile == null) "" else "--json-settings-file $jsonSettingsFile"
+    val regionOption = if (region == null) "" else "--region $region"
+    val envPropsQueriesOption = envPropsQueries?.joinToString(
+        " --env-props-query ",
+        prefix = "--env-props-query "
+    ) { "${it.first}='${it.second}'" }
+        ?: ""
 
     return python {
         name = "Create Jelastic Environment '$envName'"
