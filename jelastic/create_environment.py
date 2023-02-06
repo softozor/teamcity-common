@@ -2,6 +2,7 @@ import json
 import sys
 import urllib.request
 from argparse import Namespace, ArgumentParser
+from typing import List
 
 import yaml
 from jelastic_client import JelasticClientFactory
@@ -15,7 +16,7 @@ def parse_cmd_line_args() -> Namespace:
     )
     parser.add_argument("--env-name", required=True, type=str, action="store")
     parser.add_argument("--manifest-url", required=True, type=str, action="store")
-    parser.add_argument("--success-text-query", default=None, type=str, action="store")
+    parser.add_argument("--env-prop-query", action="append", nargs=2, type=List[str])
     parser.add_argument("--json-settings-file", type=str, action="store")
     parser.add_argument("--region", type=str, action="store")
     parser.add_argument(
@@ -63,24 +64,22 @@ def main():
         if args.json_settings_file
         else None
     )
-    success = (
-        {
-            "email": False,
-            "text": args.success_text_query,
-        }
+    env_props_query = (
+        {kv[0]: kv[1] for kv in args.env_props_query}
         if args.success_text_query
         else None
     )
-    success_text = jps_client.install_from_url(
+    env_props = jps_client.install_from_url(
         url=args.manifest_url,
         env_name=args.env_name,
         settings=settings,
         region=args.region,
-        success=success,
+        env_props_query=env_props_query,
     )
 
-    with open(args.output_success_text_file, "w") as file:
-        file.write(success_text)
+    for key, value in env_props.items():
+        print(f"publishing {key}: {value}")
+        print(f"##teamcity[setParameter name='env.{key}' value='{value}']")
 
     env_info = control_client.get_env_info(args.env_name)
     print("env info: ", env_info.status())

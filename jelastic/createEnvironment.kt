@@ -8,7 +8,7 @@ import jetbrains.buildServer.configs.kotlin.buildSteps.python
 fun BuildSteps.createEnvironment(
     envName: String,
     manifestUrl: String,
-    successTextQuery: String,
+    envPropsQueries: List<Pair<String, String>>,
     outputSuccessTextFile: String,
     jsonSettingsFile: String? = null,
     region: String? = null,
@@ -17,6 +17,7 @@ fun BuildSteps.createEnvironment(
 ): PythonBuildStep {
     val jsonSettingsFileOption = if(jsonSettingsFile == null) "" else "--json-settings-file $jsonSettingsFile"
     val regionOption = if(region == null) "" else "--region $region"
+    val envPropsQueriesOption = envPropsQueries.joinToString(" --env-prop-query ", prefix = "--env-prop-query "){"${it.first} '${it.second}'"}
 
     return python {
         name = "Create Jelastic Environment '$envName'"
@@ -27,7 +28,7 @@ fun BuildSteps.createEnvironment(
                     --jelastic-access-token %system.jelastic.access-token%
                     --env-name $envName
                     --manifest-url $manifestUrl
-                    --success-text-query '$successTextQuery'
+                    $envPropsQueriesOption
                     --output-success-text-file $outputSuccessTextFile
                     $jsonSettingsFileOption
                     $regionOption
