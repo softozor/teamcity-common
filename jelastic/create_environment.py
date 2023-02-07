@@ -66,7 +66,7 @@ def main():
         if args.env_props_query
         else None
     )
-    env_props = jps_client.install_from_url(
+    env_props_or_success_text = jps_client.install_from_url(
         url=args.manifest_url,
         env_name=args.env_name,
         settings=settings,
@@ -74,9 +74,10 @@ def main():
         env_props_query=env_props_query,
     )
 
-    for key, value in env_props.items():
-        print(f"publishing {key}: {value}")
-        print(f"##teamcity[setParameter name='env.{key}' value='{value}']")
+    if not isinstance(env_props_or_success_text, str):
+        for key, value in env_props_or_success_text.items():
+            print(f"publishing {key}: {value}")
+            print(f"##teamcity[setParameter name='env.{key}' value='{value}']")
 
     env_info = control_client.get_env_info(args.env_name)
     print("env info: ", env_info.status())
