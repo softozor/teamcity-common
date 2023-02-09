@@ -15,3 +15,7 @@ fun readScript(path: String): String {
     val bufferedReader: BufferedReader = File(DslContext.baseDir, path).bufferedReader()
     return bufferedReader.use { it.readText() }.trimIndent()
 }
+
+fun readScript(paths: List<String>): String {
+    return paths.map { readScript(it) }.reduce { acc, s -> acc + s + "\n" }
+}
