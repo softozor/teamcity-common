@@ -17,5 +17,5 @@ fun readScript(path: String): String {
 }
 
 fun readScript(paths: List<String>): String {
-    return paths.map { readScript(it) }.reduce { acc, s -> acc + s + "\n" }
+    return paths.map { readScript(it) }.reduce { acc, s -> acc + "\n" + s }
 }
