@@ -9,14 +9,15 @@ fun BuildSteps.exposeKubernetesApiServer(
 ): BuildSteps {
     val steps = BuildSteps()
 
-    steps.step(
-        createEnvironment(
-            envName = envName,
-            manifestUrl = "https://raw.githubusercontent.com/softozor/teamcity-common/main/jelastic/open_kubernetes_api.yaml",
-            dockerToolsTag = dockerToolsTag,
-            envPropsQueries = envPropsQueries,
-        )
+    val openApiStep = createEnvironment(
+        envName = envName,
+        manifestUrl = "https://raw.githubusercontent.com/softozor/teamcity-common/main/jelastic/open_kubernetes_api.yaml",
+        dockerToolsTag = dockerToolsTag,
+        envPropsQueries = envPropsQueries,
     )
+    openApiStep.name = "Open Kubernetes API"
+
+    steps.step(openApiStep)
 
     steps.step(
         waitUntilKubernetesApiIsUp()

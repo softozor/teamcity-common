@@ -10,10 +10,14 @@ fun BuildSteps.getEnvironmentProperties(
     envPropsQueries: List<Pair<String, String>>,
     dockerToolsTag: String,
 ): PythonBuildStep {
-    return createEnvironment(
+    val step = createEnvironment(
         envName = envName,
         manifestUrl = "https://raw.githubusercontent.com/softozor/teamcity-common/jelastic/get_env_props.yaml",
         envPropsQueries = envPropsQueries,
         dockerToolsTag = dockerToolsTag,
     )
+
+    step.name = "Get Environment Properties From '$envName'"
+
+    return step
 }
