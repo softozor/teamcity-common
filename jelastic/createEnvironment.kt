@@ -6,7 +6,7 @@ import jetbrains.buildServer.configs.kotlin.buildSteps.PythonBuildStep
 import jetbrains.buildServer.configs.kotlin.buildSteps.python
 
 fun BuildSteps.createEnvironment(
-    envName: String,
+    envName: String? = null,
     manifestUrl: String,
     envPropsQueries: List<Pair<String, String>>? = null,
     jsonSettingsFile: String? = null,
@@ -14,6 +14,7 @@ fun BuildSteps.createEnvironment(
     dockerToolsTag: String,
     workingDir: String = "",
 ): PythonBuildStep {
+    val envNameOption = if(envName == null) "" else "--env-name $envName"
     val jsonSettingsFileOption = if (jsonSettingsFile == null) "" else "--json-settings-file $jsonSettingsFile"
     val regionOption = if (region == null) "" else "--region $region"
     val envPropsQueriesOption = envPropsQueries?.joinToString(
@@ -29,7 +30,7 @@ fun BuildSteps.createEnvironment(
             scriptArguments = """
                     --jelastic-api-url %system.jelastic.api-url%
                     --jelastic-access-token %system.jelastic.access-token%
-                    --env-name $envName
+                    $envNameOption
                     --manifest-url $manifestUrl
                     $envPropsQueriesOption
                     $jsonSettingsFileOption
